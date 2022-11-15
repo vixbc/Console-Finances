@@ -97,36 +97,46 @@ function totalMonths(list){
 }
 
 
-function profitLoss(list){
+function tallyList(list){
     var tally = [];
     for (var i = 0; i< list.length ;i++) {
         tally.push(list[i][1]);
     }
+    return tally
+}
+
+function profitLoss(list){
+    var tally = tallyList(list);
     var sum = tally.reduce((partialSum, a) => partialSum + a, 0)
-    return sum
+    return sum 
 }
 
 function avgChange(list){
-    var change = profitLoss(list)/totalMonths(list)
+    var change = profitLoss(list)/totalMonths(list);
     return change.toFixed(2)
 }
 
-function maxMin(choice){
-    var newDict
-    if (choice == "max"){
-        return "hi"
-    } else if (choice=="min"){
-        return "no"
+function maxMin(choice,list){
+    var tally = tallyList(list);
+    if (choice=="max") {
+        max = Math.max(...tally);
+        maxIndex = tally.indexOf(max);
+        return finances[maxIndex][0] +" ($"+ max+")"
+    } else if (choice =="min") {
+        min = Math.min(...tally);
+        minIndex = tally.indexOf(min);
+        return finances[minIndex][0] +" ($"+ min+")"
     } else {
-        return "please enter a valid choice [max/min]"
+        return " please enter a valid choice [max/min]"
     }
+
 }
 
-
+console.log("Financial Analysis \n ----------------------------")
 console.log( "Total Months: " + totalMonths(finances))
 console.log( "Total: $" + profitLoss(finances))
 console.log("Average  Change: $"+ avgChange(finances))
-console.log("Greatest Increase in Profits:"+ maxMin("max"))
-console.log("Greatest Increase in Profits:"+ maxMin("min"))
-console.log("Greatest Increase in Profits:"+ maxMin("none"))
+console.log("Greatest Increase in Profits:"+ maxMin("max",finances))
+console.log("Greatest Decrease in Profits:"+ maxMin("min",finances))
+console.log("Greatest Increase in Profits:"+ maxMin("none",finances))
 
